@@ -9,9 +9,9 @@ ctrl.getroom = function (req, res) {
     let room = req.params.room
 
     if (typeof rooms[room] !== 'undefined') {
-        res.send(rooms[room])
+        res.send({status: true, room: rooms[room]})
     } else {
-        res.status(404).send({status: false, message: 'Room no aviable'})
+        res.status(404).send({status: false, message: 'Room not available'})
     }
 }
 
