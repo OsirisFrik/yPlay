@@ -1,7 +1,7 @@
 <template>
     <div id="room">
-        <div class="md-layout md-gutter">
-            <div class="md-layout-item md-large-size-70 md-small-size-100">
+        <div class="md-layout">
+            <div class="md-layout-item md-large-size-70 md-xsmall-size-100 md-small-sieze-30">
                 <div id="player"></div>
             </div>
             <div class="md-layout-item md-large-size-30 md-small-size-100">
@@ -60,6 +60,6 @@ iframe#player {
     width: 100% !important;
     height: 100%;
     min-height: 200px;
-    max-height: 600px;
+    max-height: 500px;
 }
 </style>
