@@ -49,7 +49,15 @@
         if (this.message !== null) {
           if (this.message.indexOf('/add') > -1) {
             this.addVideo(this.message)
+            return
           }
+
+          let body = {
+            username: this.username,
+            message: this.message
+          }
+
+          this.sendMessage(body)
         }
       },
       sendMessage(data) {
@@ -87,6 +95,17 @@
             id = link.split('/')[1]
             break
         }
+
+        let body = {          
+          username: this.username,
+          v_id: id
+        }
+
+        request.post(`${this.$route.params.room}/addvideo`, body).then(res => {
+          if (res.status) {
+            this.message = null
+          }
+        })
       }
     },
     beforeMount() {

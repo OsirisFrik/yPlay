@@ -37,13 +37,65 @@ ctrl.createRoom = function (req, res) {
       })
     })
   } else {
-    res.status(500).send({message: 'video id not valid'})
+    res.status(500).send({
+      message: 'video id not valid'
+    })
   }
 }
 
 ctrl.newMessage = function (req, res) {
   console.log(req.body);
   pusher.send(req.params.room, 'new-msg', req.body)
+  res.status(200).send({
+    status: true
+  })
+}
+
+ctrl.addVideo = function (req, res) {
+  console.log(req.body);
+  var room = req.params.room
+
+  if (typeof req.body.v_id !== 'undefined') {
+    rooms[room].videos.push(req.body.v_id)
+    let msg = {
+      username: 'System',
+      message: `User ${req.body.username} add video to playlist`
+    }
+    pusher.send(room, 'addVideo', req.body.v_id)
+    pusher.send(room, 'new-msg', msg)
+    res.status(200).send({
+      status: true
+    })
+  } else {
+    res.status(400).send({
+      status: false,
+      message: 'No video id'
+    })
+  }
+}
+
+ctrl.searchVideo = function (req, res) {  
+  tools.searchVideo(req.body.search, (result, data) => {
+    if (result) {
+      res.status(200).send({videos: data, status: true})
+    } else {
+      res.status(500).send({status: false, message: 'Error'})
+    }
+  })  
+}
+
+ctrl.deleteVideo = function (req, res) {
+  var room = req.params.room
+  var v_id = req.query.v_id
+
+  var index = tools.getIndex(rooms[room].videos, null, v_id)
+  console.log(index);
+  
+  
+  if (index > -1) {
+    rooms[room].videos.splice(index, 1)
+  }
+  
   res.status(200).send({status: true})
 }
 
